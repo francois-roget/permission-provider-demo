@@ -4,6 +4,8 @@ import {User} from "./Types";
 import LoginForm from "./Components/LoginForm";
 import ElementList from "./Components/ElementList";
 import {removeElement, addElement, getElements} from "./Services/ElementsStore";
+import PermissionProvider from "./PermissionProvider/PermissionProvider";
+import Restricted from "./PermissionProvider/Restricted";
 
 function App() {
     const [currentUser, setCurrentUser] = useState<User | undefined>();
@@ -17,15 +19,17 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <PermissionProvider permissions={currentUser.permissions}>
             <div
                 className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
                 <h5 className="my-0 mr-md-auto font-weight-normal">Permission Provider demo</h5>
                 {currentUser.firstName} {currentUser.lastName} &nbsp;
                 <button className="btn btn-outline-danger" onClick={logout}>Logout</button>
             </div>
-            <ElementList getElements={getElements} addElement={addElement} removeElement={removeElement}/>
-        </div>
+            <Restricted to="list.elements">
+                <ElementList getElements={getElements} addElement={addElement} removeElement={removeElement}/>
+            </Restricted>
+        </PermissionProvider>
     );
 }
 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ElementType} from "../../Types";
+import Restricted from "../../PermissionProvider/Restricted";
 
 
 type Props = {
@@ -30,7 +31,11 @@ const ElementList: React.FunctionComponent<Props> = ({getElements, addElement, r
                     <th scope="col">Price</th>
                     <th scope="col">Currency</th>
                     <th scope="col" className="text-right">
-                        <button className="btn btn-primary" onClick={addRandomElement}>Add</button>
+                        <Restricted to='add.element'>
+                            <button className="btn btn-primary btn-sm" onClick={addRandomElement}>
+                                <i className="bi-plus-circle"/>
+                            </button>
+                        </Restricted>
                     </th>
                 </tr>
                 </thead>
@@ -41,7 +46,11 @@ const ElementList: React.FunctionComponent<Props> = ({getElements, addElement, r
                         <td>{e.price}</td>
                         <td>{e.currency}</td>
                         <td className="text-right">
-                            <button className="btn btn-danger" onClick={() => deleteElement(e)}>Delete</button>
+                            <Restricted to='delete.element'>
+                                <button className="btn btn-danger btn-sm" onClick={() => deleteElement(e)}>
+                                    <i className="bi bi-trash"/>
+                                </button>
+                            </Restricted>
                         </td>
                     </tr>
                 ))}
