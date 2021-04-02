@@ -1,24 +1,25 @@
-import React, {useContext} from 'react';
-import PermissionContext from "./PermissionContext";
+import React from 'react';
 import {Permission} from "../Types";
+import usePermission from "./usePermission";
 
 type Props = {
     to: Permission;
+    fallback?: JSX.Element | string;
 };
 
 // This component is meant to be used everywhere a restriction based on user permission is needed
-const Restricted: React.FunctionComponent<Props> = ({to, children}) => {
+const Restricted: React.FunctionComponent<Props> = ({to, fallback, children}) => {
 
-    // We "connect" to the provider thanks to the PermissionContext
-    const {isAllowedTo} = useContext(PermissionContext);
+    // We "connect" to the provider thanks to the permission hook
+    const allowed = usePermission(to);
 
     // If the user has that permission, render the children
-    if(isAllowedTo(to)){
+    if(allowed){
         return <>{children}</>;
     }
 
-    // Otherwise, do not render anything
-    return null;
+    // Otherwise, render the fallback
+    return <>{fallback}</>;
 };
 
 export default Restricted;
