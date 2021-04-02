@@ -1,11 +1,18 @@
 import {useState} from 'react';
 import './App.css';
-import {User} from "./Types";
+import {Permission, User} from "./Types";
 import LoginForm from "./Components/LoginForm";
 import ElementList from "./Components/ElementList";
 import useElementsStore from "./Services/useElementsStore";
 import PermissionProvider from "./PermissionProvider/PermissionProvider";
 import Restricted from "./PermissionProvider/Restricted";
+
+// Function that simulates fetching a permission from remote server
+const fetchPermission = (user: User) => async (permission: Permission): Promise<boolean> =>{
+    // Simulate a delay from a request
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return user.permissions.includes(permission);
+}
 
 function App() {
     const [currentUser, setCurrentUser] = useState<User | undefined>();
@@ -28,7 +35,7 @@ function App() {
     </div>);
 
     return (
-        <PermissionProvider permissions={currentUser.permissions}>
+        <PermissionProvider fetchPermission={fetchPermission(currentUser)}>
             <div
                 className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
                 <h5 className="my-0 mr-md-auto font-weight-normal">Permission Provider demo</h5>
