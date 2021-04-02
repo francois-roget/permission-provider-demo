@@ -4,6 +4,12 @@ type Props = {
     onLogin: (user: User) => void;
 }
 
+const noRights: User = {
+    firstName: 'No Rights',
+    lastName: 'User',
+    permissions: [],
+}
+
 const viewer: User = {
     firstName: 'Viewer',
     lastName: 'User',
@@ -25,7 +31,19 @@ const administrator: User = {
 const LoginForm: React.FunctionComponent<Props> = ({onLogin}: Props) => (
     <div className="container">
         <div className="card-deck mb-3 text-center">
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-3 shadow-sm">
+                <div className="card-header">
+                    <h4 className="my-0 font-weight-normal">Viewer</h4>
+                </div>
+                <div className="card-body">
+                    You will have no permission
+                    <button type="button" className="btn btn-lg btn-block btn-primary"
+                            onClick={() => onLogin(noRights)}>
+                        Login without permissions
+                    </button>
+                </div>
+            </div>
+            <div className="card mb-3 shadow-sm">
                 <div className="card-header">
                     <h4 className="my-0 font-weight-normal">Viewer</h4>
                 </div>
@@ -38,7 +56,7 @@ const LoginForm: React.FunctionComponent<Props> = ({onLogin}: Props) => (
                     </button>
                 </div>
             </div>
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-3 shadow-sm">
                 <div className="card-header">
                     <h4 className="my-0 font-weight-normal">Contributor</h4>
                 </div>
@@ -54,7 +72,7 @@ const LoginForm: React.FunctionComponent<Props> = ({onLogin}: Props) => (
                     </button>
                 </div>
             </div>
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-3 shadow-sm">
                 <div className="card-header">
                     <h4 className="my-0 font-weight-normal">Administator</h4>
                 </div>

@@ -18,6 +18,14 @@ function App() {
     const logout = () => {
         setCurrentUser(undefined);
     }
+    const notAllowed = (<div className="container">
+        <div className="row">
+            <div className="col">
+                <h4>Not Allowed </h4>
+                You are not allowed to access this feature, please contact your administrator
+            </div>
+        </div>
+    </div>);
 
     return (
         <PermissionProvider permissions={currentUser.permissions}>
@@ -27,7 +35,7 @@ function App() {
                 {currentUser.firstName} {currentUser.lastName} &nbsp;
                 <button className="btn btn-outline-danger" onClick={logout}>Logout</button>
             </div>
-            <Restricted to="list.elements">
+            <Restricted to="list.elements" fallback={notAllowed}>
                 <ElementList elements={elements} addElement={addElement} removeElement={removeElement}/>
             </Restricted>
         </PermissionProvider>
