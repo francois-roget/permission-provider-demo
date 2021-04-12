@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ElementType} from "../../Types";
 
 
 type Props = {
-    elements: ElementType[];
+    getElements: () => ElementType[];
     addElement: (e: ElementType) => void;
     removeElement: (e: ElementType) => void;
 }
-const ElementList: React.FunctionComponent<Props> = ({elements, addElement, removeElement}) => {
+const ElementList: React.FunctionComponent<Props> = ({getElements, addElement, removeElement}) => {
+    const [elements, setElements] = useState(getElements());
 
     const addRandomElement = () => {
         const random = Math.floor(Math.random() * Math.floor(200));
         addElement({name: `test-${random}`, price: random, currency: random % 2 === 0 ? "EUR" : "USD"});
+        setElements(getElements());
+    }
+
+    const deleteElement = (e: ElementType) =>{
+        removeElement(e);
+        setElements(getElements());
     }
 
     return (
@@ -34,7 +41,7 @@ const ElementList: React.FunctionComponent<Props> = ({elements, addElement, remo
                         <td>{e.price}</td>
                         <td>{e.currency}</td>
                         <td className="text-right">
-                            <button className="btn btn-danger" onClick={() => removeElement(e)}>Delete</button>
+                            <button className="btn btn-danger" onClick={() => deleteElement(e)}>Delete</button>
                         </td>
                     </tr>
                 ))}

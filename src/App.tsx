@@ -3,11 +3,10 @@ import './App.css';
 import {User} from "./Types";
 import LoginForm from "./Components/LoginForm";
 import ElementList from "./Components/ElementList";
-import useElementsStore from "./Services/useElementsStore";
+import {removeElement, addElement, getElements} from "./Services/ElementsStore";
 
 function App() {
     const [currentUser, setCurrentUser] = useState<User | undefined>();
-    const [elements, addElement, removeElement] = useElementsStore();
 
     if (!currentUser) {
         return <LoginForm onLogin={setCurrentUser}/>;
@@ -25,7 +24,7 @@ function App() {
                 {currentUser.firstName} {currentUser.lastName} &nbsp;
                 <button className="btn btn-outline-danger" onClick={logout}>Logout</button>
             </div>
-            <ElementList elements={elements} addElement={addElement} removeElement={removeElement}/>
+            <ElementList getElements={getElements} addElement={addElement} removeElement={removeElement}/>
         </div>
     );
 }
